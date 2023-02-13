@@ -5,14 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>MyForecast weather</title>
 </head>
 <body>
-    <div class="flex">
-        <div class="country"></div>
-        <div class="countries-stan"></div>
-        <div class="temp"></div>
-    </div>
+    <main class="grid">
+        <!-- live current weather -->
+        <article class="live weather">
+            <div id="time" class=" time-weather-data">
+                <p class="current-date"></p>
+                <p class="current-time"></p>
+            </div>
+            <div class="location">
+                <img class="current-weather-icon" src="/images/animated/day.svg" alt="current-weather-icon">
+                <h2 class="current-location">Location</h2>
+                <h3 class="current-temperature">25<span>&deg;</span></h3>
+            </div>
+            <div class="weather-data">
+                <h3>Max temp:</h3>
+                <p class="max-temp"><span>&deg;</span></p>
+            </div>
+            <div class="weather-data">
+                <h3>Min temp:</h3>
+                <p class="min-temp"><span>&deg;</span></p>
+            </div>
+            <div class="weather-data">
+                <h3>Wind:</h3>
+                <p class="wind"><span>km/hr</span></p>
+            </div>
+            <div class="weather-data">
+                <h3>wind direction:</h3>
+                <p class="wind-direction"><span>km/hr</span></p>
+            </div>
+            <div class="weather-data">
+                <h3>Rain:</h3>
+                <p class="rain">mm<span></span></p>
+            </div>
+            <div class="weather-data">
+                <h3>Sunrise:</h3>
+                <p class="sunrise">0610</p>
+            </div>
+            <div class="weather-data">
+                <h3>Sunset:</h3>
+                <p class="sunset">1955</p>
+            </div>
+        </article>
+    </main>
 
 
     <script src="script.js"></script>

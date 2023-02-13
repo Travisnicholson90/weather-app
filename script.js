@@ -1,51 +1,125 @@
-// API Request:
+// fetch weather data
+const currentLocation = document.querySelector('.current-location')
+const currentTemp = document.querySelector('.current-temperature');
+const maxTemp = document.querySelector('.max-temp');
+const minTemp = document.querySelector('.min-temp');
+const windSpeed = document.querySelector('.wind');
+const windDirection = document.querySelector('.wind-direction');
+const rainFall = document.querySelector('.rain');
+const sunrise = document.querySelector('.sunrise');
+const sunset = document.querySelector('.sunset');
+const time = document.querySelector('.current-time');
+const currentDateElement = document.querySelector('.current-date');
 
-const requestData = fetch('https://restcountries.com/v2/all')
-.then(response => response.json()) // returns the response to json
-.then(data => console.log(data)) // return the json data
+//get current time and date
+
+let date = new Date();
+console.log(date);
+let day = date.getDate();
+let month = date.getMonth();
+let year = date.getFullYear();
+let hours = date.getHours();
+let minutes = date.getMinutes();
+
+const currentDate = `${day}/${month}/${year}`;
+const currentTime = `${hours}:${minutes}`
+currentDateElement.innerHTML = currentDate
+time.innerHTML = currentTime;
 
 
-  // create a function that will return the first country of the array and then display it inside the country div
-  const country = document.querySelector('.country')
- 
-    const request = fetch('https://restcountries.com/v2/all')
-    .then(response => response.json()) // returns json
-    .then(data => data[0]) // returns the data to the first element of the array === afghanistan
-    .then(firstCountry => { // this .then method returns the previous value to firstCountry which is then assigned to let afghanistan
-        let afghanistan = firstCountry
-        console.log(afghanistan);
-        // to output the country name inside the element you need to use a string literal 
-        country.innerHTML = `${firstCountry.name}` 
-    })
+const weatherData = fetch ('https://api.open-meteo.com/v1/dwd-icon?latitude=-33.87&longitude=151.21&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,windspeed_10m_max&current_weather=true&timeformat=unixtime&timezone=Australia%2FSydney')
+.then(response => response.json()) // return JSON 
+.then(data => { // return json data
+    console.log(data);
+    
+    let locationData = data.timezone;
+    let sydney = locationData.replace("Australia/","")
+    console.log(sydney);
+    currentLocation.innerHTML = sydney
+    
+    
 
+    let temperature = data.current_weather.temperature;
+    currentTemp.innerHTML = `${temperature} &deg;C`;
 
-// filter all of the countries with stan in their name and output the names inside a div
+    let wind = data.current_weather.windspeed;
+    windSpeed.innerHTML = `${wind} km/hr`;
 
-const countriesStan = document.querySelector('.countries-stan')
+    let direction = data.current_weather.winddirection;
+    windDirection.innerHTML = direction;
+    
+    let maxTemperature = data.daily.temperature_2m_max[0];
+    maxTemp.innerHTML = `${maxTemperature} &deg;C`
+    
+    let minTemperature = data.daily.temperature_2m_min[0];
+    minTemp.innerHTML = `${minTemperature} &deg;C`
 
-const requestCountries = fetch('https://restcountries.com/v2/all')
-.then(response => response.json()) // returns the json
-.then(data => {
-    let filterCountries = data.filter(c => c.name.includes('stan'))
-    console.log(filterCountries);
-    //display filtered countries inside the div element
-    // this is not working because the object is an array so you need to loop through to display all of the countries.
-    //use map 
-    countriesStan.innerHTML = filterCountries.map(country => country.name).join(' ')
+    let rain = data.daily.rain_sum[0];
+    rainFall.innerHTML = `${rain} mm`
+    
+    let sunriseData = data.daily.sunrise[1];
+    sunrise.innerHTML = convertToTime(sunriseData);
+        
+    let sunsetData = data.daily.sunset[0];
+    sunset.innerHTML = convertToTime(sunsetData);
+
 })
-    
-    
-    // fetch weather data
-    let currentWeather;
-    const temp = document.querySelector('.temp')
-    const requestWeather = fetch('https://api.open-meteo.com/v1/forecast?latitude=-33.86&longitude=151.21&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m')
-    .then(response => response.json()) // return json data
-    // filter out the current temperature
-    // get weather temperature
-    //return the current_weather data and store in weatherData variable
-    .then(data => {
-        let weatherData = data.current_weather.temperature
-        console.log(weatherData); 
-        temp.innerHTML = weatherData 
 
-    })
+//function to convert Unix time to AEDT
+function convertToTime(unixTime) {
+    const date = new Date(unixTime * 1000);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // const temp = document.querySelector('.temp')
+    // const wind = document.querySelector('.wind')
+    // const time = document.querySelector('.time')
+    // const requestWeather = fetch('https://api.open-meteo.com/v1/forecast?latitude=-33.86&longitude=151.21&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m')
+    // .then(response => response.json()) // return json data
+    // // return the json data to store in the data variable
+    // .then(data => {
+    //     console.log(data);
+    //     // navigate through the API objects  i.e data. current_weather.temperature and assign the value to a variable. 
+    //     let temperature = data.current_weather.temperature
+    //     let windSpeed = data.current_weather.windspeed
+    //     let hourly = data.hourly.time
+    //     console.log(temperature); 
+    //     console.log(windSpeed);
+        
+    //     // set the value to the innerHTML element
+    //     wind.innerHTML = windSpeed
+    //     temp.innerHTML = temperature
+    //     time.innerHTML = hourly
+    
+
+    // })
